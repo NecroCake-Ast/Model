@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+@{
+  Layout = null;
+}
+<html>
+  <head>
+		<style type = "text/css">
+			.center{ text-align: center; }
+		</style>
+    <script src="../Modules/Chemistry/TemplateData/UnityProgress.js"></script>
+    <script src="../Modules/Chemistry/Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "../Modules/" + '@ViewBag.Module' + "/Build/Web_Release_Data.json", {onProgress: UnityProgress});
+
+      function GetUserData()
+      {
+        gameInstance.SendMessage("SceneController", "LoadData", `@(new Microsoft.AspNetCore.Html.HtmlString(ViewBag.Setting))`);
+      }
+
+      function SaveResult(answer)
+      {
+        window.location.replace("SaveAnswer?answer=" + answer);
+      }
+    </script>
+  </head>
+  <body>
+    <div class="center">
+      <div class="webgl-content">
+        <div id="gameContainer" style="width: 860px; height: 550px; text-align: center;"></div>
+      </div>
+    </div>
+  </body>
+</html>

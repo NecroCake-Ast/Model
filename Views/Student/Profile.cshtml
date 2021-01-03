@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+@using Microsoft.AspNetCore.Http;
+@using Model.Models.User;
+@{
+  Layout = "StudentLayout";
+}
+<html>
+  <head>
+    <style type = "text/css">
+	    td.ProfileData{ text-align:left; vertical-align:top; }
+	    td.ImagePos{ text-align:center; }
+      img.ImageBord{ border: 4px dotted black; }
+			a.LinkStyle:link { font-size:20pt; padding:2px 15px; text-decoration:none; color:black; border: 2px solid black; background-color: LightGray; }
+			a.LinkStyle:visited { color:black; }
+			a.LinkStyle:hover { color:red; }
+    </style>
+  </head>
+  <body>
+    @{
+    }
+    <table width="100%">
+      <tr>
+        <td width="250" class="ImagePos">
+          <img alt="Profile Image" src="@Url.Content(ViewBag.ImageWay)" width="200" height="250" class="ImageBord"/>
+          <br/><br/>
+          @if(ViewBag.isOwner != null && ViewBag.isOwner)
+          {
+            @Html.ActionLink("Изменить", "Edit", "Student", null, new {@class="LinkStyle" })
+          }
+        </td>
+				<td class="ProfileData">
+            @switch(ViewBag.UserData.Type)
+            {
+              case EUserType.UT_ADMIN:
+                @Html.Label("АДМИНИСТРАТОР", null, new { @class="MainInfo"});
+                break;
+              case EUserType.UT_STUDENT:
+                @Html.Label("ОБУЧАЮЩИЙСЯ", null, new { @class="MainInfo"});
+                break;
+              case EUserType.UT_TEACHER:
+                @Html.Label("ПРЕПОДАВАТЕЛЬ", null, new { @class="MainInfo"});
+                break;
+            }
+          <br/>
+          @Html.Label(ViewBag.UserData.FirstName + " " + ViewBag.UserData.SecondName, null, new { @class="MainInfo"})
+					</td>
+      </tr>
+    </table>
+  </body>
+</html>

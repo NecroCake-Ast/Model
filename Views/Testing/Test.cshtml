@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+@using Model.Models.Testing.Task;
+@{
+  Layout = "MainLayout";
+}
+<html>
+  <head>
+		<style type = "text/css">
+			Input.InpStyle{ border: 1px solid black; font-size: 24px; overflow-y: hidden; width: 60% }
+			label.Variant { font-size:18pt; }
+      br.Interval { line-height: 175%; }
+		</style>
+  </head>
+  <body>
+    @{
+      int ViewBlock = ViewBag.Active.ActiveBlock + 1;
+      int ViewTask = ViewBag.Active.ActiveTask + 1;
+      string TaskHeader = ViewBlock + "." + ViewTask;
+      @Html.Raw("<label class=\"MainInfo\">Задание ");
+      @Html.Raw(TaskHeader);
+      @Html.Raw(":</label><br>");
+      ITask Task = ViewBag.Active.Test.Blocks[ViewBag.Active.ActiveBlock].Tasks[ViewBag.Active.ActiveTask];
+      switch(Task.Type)
+      {    
+        case ETaskTypeID.TID_MULTI:
+          {
+            string Text = ((CMultiAnswer)Task).Text;
+            @Html.Label(Text, null, new { @class="MainInfo"});
+            @Html.Raw("<br>");
+            @Html.Raw("<br>");
+            @Html.Label("Варианты ответа:", null, new { @class="MainInfo"});
+              @Html.Raw("<br>");
+            for(int i = 0; i < ((CMultiAnswer)Task).Variants.Count; i++)
+            {
+              string variant = "\t" + (i + 1).ToString() + ") " + ((CMultiAnswer)Task).Variants[i];
+              @Html.Label(variant, null, new { @class="Variant"});
+              @Html.Raw("<br>");
+            }
+          }
+          break;
+        case ETaskTypeID.TID_SINGLE:
+          {
+            string Text = ((CSingleAnswer)Task).Text;
+            @Html.Label(Text, null, new { @class="MainInfo"});
+            @Html.Raw("<br>");
+            @Html.Raw("<br>");
+            @Html.Label("Варианты ответа:", null, new { @class="MainInfo"});
+              @Html.Raw("<br>");
+            for(int i = 0; i < ((CSingleAnswer)Task).Variants.Count; i++)
+            {
+              string variant = "\t" + (i + 1).ToString() + ") " + ((CSingleAnswer)Task).Variants[i];
+              @Html.Label(variant, null, new { @class="Variant"});
+              @Html.Raw("<br>");
+            }
+          }
+          break;
+        case ETaskTypeID.TID_OPEN:
+          {
+            string Text = ((COpenAnswer)Task).Text;
+            @Html.Label(Text, null, new { @class="MainInfo" });
+            @Html.Raw("<br>");
+            @Html.Raw("<br>");
+          }
+          break;
+      }
+    }
+    @using (Html.BeginForm("CheckAnswer", "Testing", FormMethod.Post))
+    {
+        string UserAnswer = ViewBag.Active.TestData.Answers[ViewBag.Active.ActiveBlock][ViewBag.Active.ActiveTask];
+        @Html.TextBox("Answer", UserAnswer, new { @class="InpStyle", @autocomplete="off" })
+        <input type="submit" value="Подтвердить" class="SendButton" />
+    }
+    @{
+      @Html.Raw("<br><hr/><br>");
+      @Html.Raw("<table width=\"100%\">");
+      for(int curBlock = 0; curBlock < ViewBag.Active.Test.Blocks.Count; curBlock++)
+      {
+        if(!ViewBag.Active.TestData.EndedBlocks.Contains(ViewBag.Active.Test.Blocks[curBlock].ID) && ViewBag.Active.Test.Blocks[curBlock].Access(new HashSet<int>(ViewBag.Active.TestData.EndedBlocks)))
+        {
+          @Html.Raw("<tr> <td width=\"5%\"> <label class=\"MainInfo\">" + (curBlock + 1) + "</label> </td>");
+          @Html.Raw("<td width=\"25%\"><label class=\"MainInfo\">" + ViewBag.Active.Test.Blocks[curBlock].Name + "</label></td><td width=\"60%\">");
+          for(int curTask = 0; curTask < ViewBag.Active.Test.Blocks[curBlock].Tasks.Count; curTask++)
+          {
+            @Html.ActionLink((curTask + 1).ToString(), "ChangeTask", "Testing", new {blockID=curBlock, taskID=curTask}, new {@class="bar"});
+          }
+          @Html.Raw("</td> <td width=\"10%\">");
+          @Html.ActionLink("Завершить", "EndBlock", "Testing", new {BlockID=curBlock}, new {@class="bar"})
+        }
+      }
+      @Html.Raw("</table>");
+    }
+  </body>
+</html>

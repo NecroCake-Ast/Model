@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+@using Model.Models.User
+@model CAuthorizationData
+@{
+	Layout = "MainLayout";
+}
+<html>
+    <head>
+        
+    </head>
+    <body>
+        <div class="FullScreen">
+			<div class="VerticallAlign">
+				<div class="HorizontalAlign">
+					@using(Html.BeginForm("Login", "Home", FormMethod.Post))
+					{
+						<table width="100%">
+							<tr>
+								<td class="FormLeftTableStyle">
+									@Html.LabelFor(m => m.Login,"Логин", new { @class="MainInfo"})
+								</td>
+								<td class="FormRightTableStyle">
+									@Html.TextBoxFor(m=>m.Login, new { @class="MainInfo"})<br/>
+								</td>
+							</tr>
+							<tr>
+								<td class="FormLeftTableStyle">
+									@Html.LabelFor(m => m.Password, "Пароль", new { @class="MainInfo"})
+								</td>
+								<td class="FormRightTableStyle">
+									@Html.PasswordFor(m=>m.Password, new { @class="MainInfo"})
+								</td>
+							</tr>
+						</table>
+						<p><input type="submit" value="Войти" class="SendButton" /></p>
+					}
+				</div>
+			</div>
+		</div>
+    </body>
+</html>

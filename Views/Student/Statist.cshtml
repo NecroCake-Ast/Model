@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+@using Model.Models.Statistics.Testing
+@{
+  Layout = "StudentLayout";
+}
+<html>
+  <head>
+		<style type = "text/css">
+			table.TableStyle{ width: 100%; border-collapse: collapse;}
+      td.TableStyle{border: 2px solid black; font-size: 16pt;}
+      th.TableStyle{border: 2px solid black; font-size: 20pt;}
+		</style>
+  </head>
+  <body>
+    <table class="TableStyle">
+      <tr>
+        <th width="40%" class="TableStyle">Название работы</th>
+        <th width="20%" class="TableStyle">Полученный балл</th>
+        <th width="20%" class="TableStyle">Минимальный балл</th>
+        <th width="20%" class="TableStyle">Максимальный балл</th>
+      </tr>
+      @foreach(CUserStatistic curResult in ViewBag.Results)
+      {
+        @Html.Raw("<tr><td class=\"TableStyle\">" + curResult.TestName + "</td><td class=\"TableStyle\">" + curResult.Scores.Score
+          + "</td><td class=\"TableStyle\">" + curResult.Scores.MinScore + "</td><td class=\"TableStyle\">" + curResult.Scores.MaxScore + "</td></tr>");
+      }
+    </table>
+  </body>
+</html>

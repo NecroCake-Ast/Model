@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+@using Model.Models.User;
+@{
+    Layout = "AdminLayout";
+}
+<html>
+    <head>
+    </head>
+    <body>
+        <table class = "TableStyle">
+            <tr>
+                <td width="5%"  class = "TitleTableStyle">ID</td>
+                <td width="15%" class = "TitleTableStyle">Логин</td>
+                <td width="20%" class = "TitleTableStyle">Имя</td>
+                <td width="20%" class = "TitleTableStyle">Фамилия</td>
+                <td width="15%" class = "TitleTableStyle">Тип</td>
+                <td width="25%" class = "TitleTableStyle">Операция</td>
+            </tr>
+	    	@foreach(var i in ViewBag.UserList)
+    		{
+                <tr>
+                    <td class = "TableStyle">
+			            @Html.Raw(i.user.ID)
+                    </td>
+                    <td class = "TableStyle">
+                        @Html.Raw(i.login)
+                    </td>
+                    <td class = "TableStyle">
+			            @Html.Raw(i.user.FirstName)
+                    </td>
+                    <td class = "TableStyle">
+			            @Html.Raw(i.user.SecondName)
+                    </td>
+                    <td class = "TableStyle">
+			            @{
+                            switch(i.user.Type)
+                            {
+                                case EUserType.UT_ADMIN:
+                                    <text>
+                                        Администратор
+                                    </text>
+                                    break;
+                                case EUserType.UT_STUDENT:
+                                    <text>
+                                        Обучающийся
+                                    </text>
+                                    break;
+                                case EUserType.UT_TEACHER:
+                                    <text>
+                                        Преподаватель
+                                    </text>
+                                    break;
+                            }
+                        }
+                    </td>
+                    <td class = "TableStyle">
+                        @if(i.user.Type != EUserType.UT_ADMIN)
+                        {
+                            @Html.ActionLink("Удалить", "RemoveUser", "Admin", new {login=i.login}, new {@class="bar"})
+                        }
+                    </td>
+                </tr>
+                
+		    }
+        </table>
+    </body>
+</html>

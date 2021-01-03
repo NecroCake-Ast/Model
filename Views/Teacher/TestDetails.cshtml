@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+@{
+  Layout = "TeacherLayout";
+}
+<html>
+  <head>
+    <style type = "text/css">
+			table.TableStyle{ width: 100%; border-collapse: collapse;}
+			td.TableStyle{border: 2px solid black; font-size: 18pt; text-align: left;}
+			th.TableStyle{border: 2px solid black; font-size: 24pt; font-weight: bold; text-align: center;}
+			th.TableEnd{border: 2px solid black; font-size: 24pt; font-weight: bold; text-align: left;}
+      
+			a.tableLink:link { font-size:18pt; padding:2px 5px; text-decoration:none; color:black; }
+			a.tableLink:visited { color:black; }
+			a.tableLink:hover { color:red; }
+    </style>
+  </head>
+  <body>
+    @if(ViewBag.Details != null)
+    {
+      @Html.Raw("<table class=\"TableStyle\"><tr>");
+      @Html.Raw("<th width=\"40%\" class=\"TableStyle\">Обучающийся</th>");
+      @Html.Raw("<th width=\"10%\" class=\"TableStyle\">Набранный балл</th>");
+      @Html.Raw("<th width=\"20%\" class=\"TableStyle\">Затраченное время</th>");
+      @Html.Raw("<th width=\"30%\" class=\"TableStyle\">Дата завершения</th></tr>");
+      @foreach(var curWork in ViewBag.Details.Results)
+      {
+        @Html.Raw("<td class=\"TableStyle\">");
+        @Html.ActionLink((string)curWork.Name, "UserResult", "Teacher", new {TestID=ViewBag.Details.ID, UserID=curWork.ID}, new {@class="tableLink"})
+        @Html.Raw("</td><td class=\"TableStyle\">" + curWork.Score + "</td>");
+        @Html.Raw("<td class=\"TableStyle\">" + curWork.Time + " сек.</td>");
+        @Html.Raw("<td class=\"TableStyle\">" + curWork.Date + "</td></tr>");
+      }
+      @Html.Raw("<tr><th class=\"TableEnd\">Средние значения</th>");
+      @Html.Raw("<th class=\"TableStyle\">" + ViewBag.Details.MiddleScore + "</th>");
+      @Html.Raw("<th class=\"TableStyle\">" + ViewBag.Details.MiddleTime + " cек.</th></tr>");
+      @Html.Raw("</table>");
+    }
+  </body>
+</html>

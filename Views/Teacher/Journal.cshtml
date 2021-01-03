@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+@using Microsoft.AspNetCore.Http;
+@using Model.Models.Work;
+@{
+  Layout = "TeacherLayout";
+}
+<head>
+		<style type = "text/css">
+			a.tableLink:link { font-size:18pt; padding:2px 5px; text-decoration:none; color:black; }
+			a.tableLink:visited { color:black; }
+			a.tableLink:hover { color:red; }
+      
+			text.TableStyle { font-size:18pt; padding:2px 5px; }
+		</style>
+</head>
+<html>
+  <body>
+      <table class = "TableStyle">
+          <tr>
+            <td width="5%" class = "TitleTableStyle">ID</td>
+            <td width="30%" class = "TitleTableStyle">Название</td>
+            <td width="15%" class = "TitleTableStyle">Тип</td>
+            <td width="30%" class = "TitleTableStyle">Требуемые работы</td>
+            <td width="20%" class = "TitleTableStyle">Выполняющие</td>
+         </tr>
+      @foreach(var curWork in ViewBag.Works)
+      {
+        <tr>
+          <td class = "TableStyle">
+            @Html.Raw(curWork.WorkID)
+          </td>
+          <td class = "TableStyle"> 
+            @Html.ActionLink((string)curWork.Name, "TestDetails", "Teacher", new {ID=curWork.WorkID}, new {@class="tableLink"})
+          </td>
+          <td class = "TableStyle"> 
+            @{
+              switch(curWork.Type)
+              {
+                case EWorkType.WT_TEST:
+                  <text>
+                    <label class="tableLink">Тестирование</label>
+                  </text>
+                  break;
+                case EWorkType.WT_UNITY_WORK:
+                case EWorkType.WT_JS_WORK:
+                  <text>
+                    <label class="tableLink">Работа</label>
+                  </text>
+                  break;
+                }
+              }
+          </td>
+          <td class = "TableStyle">
+            @{
+              foreach(var require in curWork.Require)
+              {
+                <label class="tableLink">@require.WorkName </label>
+                <br>
+              }
+            }
+          </td>
+          <td class = "TableStyle">
+            @{
+              foreach(var student in curWork.StudentID)
+              {
+                @Html.ActionLink((string)(student.FirstName + " " + student.SecondName), "Profile", "Teacher", new {ID=student.ID}, new {@class="tableLink"})
+                <br>
+              }
+            }
+          </td>
+        </tr>
+      }
+    </table>
+  </body>
+</html>

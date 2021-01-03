@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+@{
+    Layout = "MainLayout";
+}
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width" />
+		<style type = "text/css">
+			table.TableStyle{ width: 100%; border-collapse: collapse;}
+			td.TableStyle{border: 2px solid black; font-size: 16pt; text-align: left;}
+			td.TitleTableStyle{border: 2px solid black; font-size: 24pt; font-weight: bold; text-align: center;}
+		</style>
+	</head>
+	<body>
+        <table class="bar">
+			<tr>
+				<td width="33%" class="bar">
+            		@Html.ActionLink("Профиль", "Profile", "Teacher", null, new {@class="bar"})
+				</td>
+				<td width="34%" class="bar">
+            		@Html.ActionLink("Журнал", "Journal", "Teacher", null, new {@class="bar"})
+				</td class="bar">
+				<td width="33%" class="bar">
+            		@Html.ActionLink("Выйти", "Exit", "Home", null, new {@class="bar"})
+				</td class="bar">
+			</tr>
+		</table>
+		<br><br><br>
+		<div>@RenderBody()</div>
+	</body>
+</html>

@@ -6,27 +6,38 @@ using System.Xml;
 
 namespace Model.Models.Testing.Load
 {
+    /// <summary>
+    /// Генератор теста, использующий данные из файла
+    /// </summary>
     public class CFileTestMaker : ITestMaker
     {
-        private readonly string m_storagePath;
+        private readonly string m_storagePath;  //!< Путь до папки с данными
         public CFileTestMaker(string storagePath)
         {
             m_storagePath = storagePath;
         }
 
-        private void LoadTestScoreSummator(CTest test, XmlNode node)
+        /// <summary>
+        /// Сортировка множества по возрастанию номеров правильных ответов
+        /// </summary>
+        /// <param name="set"></param>
+        private void SortSet(List<KeyValuePair<uint, string>> set)
         {
-            switch (node.InnerText)
-            {
-                case "Простое":
-                    test.Summator = new CClearSummator();
-                    break;
-                default:
-                    test.Summator = new CClearSummator();
-                    break;
-            }
+            for (int i = 0; i + 1 < set.Count; i++)
+                for (int j = i + 1; j < set.Count; j++)
+                    if (set[i].Key > set[j].Key)
+                    {
+                        KeyValuePair<uint, string> tmp = set[i];
+                        set[i] = set[j];
+                        set[j] = tmp;
+                    }
         }
 
+        /// <summary>
+        /// Создаёт класс оценивания по информации, указанной в узле
+        /// </summary>
+        /// <param name="node">Узел с информацией о способе оценивания</param>
+        /// <returns>Способ оценивания</returns>
         private IScoreSummator LoadSummator(XmlNode node)
         {
             switch (node.InnerText)
@@ -37,6 +48,26 @@ namespace Model.Models.Testing.Load
             return new CClearSummator();
         }
 
+        /// <summary>
+        /// Загрузка ID задания и ожидаемого времени выполнения
+        /// </summary>
+        /// <param name="task">Задание</param>
+        /// <param name="node">Корневой узел задания</param>
+        private void Load_ID_And_Time(ITask task, XmlNode node)
+        {
+            XmlNode tmpNode = node.Attributes.GetNamedItem("ID");
+            if (tmpNode != null)
+                task.ID = int.Parse(tmpNode.InnerText);
+            tmpNode = node.Attributes.GetNamedItem("Время");
+            if (tmpNode != null)
+                task.Time = int.Parse(tmpNode.InnerText);
+        }
+
+        /// <summary>
+        /// Внесение в блок id блоков, завершение которых требуется для допуска
+        /// </summary>
+        /// <param name="block">Блок заданий</param>
+        /// <param name="node">Узел, содержащий id требуемых блоков</param>
         private void LoadRequires(CBlock block, XmlNode node)
         {
             string tmp = node.InnerText;
@@ -45,15 +76,15 @@ namespace Model.Models.Testing.Load
                 try { block.Requires.Add(int.Parse(i)); } catch { }
         }
 
+        /// <summary>
+        /// Добавление в блок задания с выбором 1 правильного ответа
+        /// </summary>
+        /// <param name="block">Блок заданий</param>
+        /// <param name="node">Корневой узел задания с выбором 1 правильного варианта ответа</param>
         private void LoadSingle(CBlock block, XmlNode node)
         {
             CSingleAnswer task = new CSingleAnswer();
-            XmlNode tmpNode = node.Attributes.GetNamedItem("ID");
-            if (tmpNode != null)
-                task.ID = int.Parse(tmpNode.InnerText);
-            tmpNode = node.Attributes.GetNamedItem("Время");
-            if (tmpNode != null)
-                task.Time = int.Parse(tmpNode.InnerText);
+            Load_ID_And_Time(task, node);
             List<string> Variants = new List<string>();
             string Correct = "";
             foreach (XmlNode curNode in node)
@@ -84,15 +115,17 @@ namespace Model.Models.Testing.Load
             block.Tasks.Add(task);
         }
 
+        /// <summary>
+        /// Добавление в блок задания с выбором нескольких правильных вариантов ответа
+        /// </summary>
+        /// <param name="block">Блок заданий</param>
+        /// <param name="node">
+        /// Корневой узел задания с выбором нескольких правильных варианта ответа
+        /// </param>
         private void LoadMulti(CBlock block, XmlNode node)
         {
             CMultiAnswer task = new CMultiAnswer();
-            XmlNode tmpNode = node.Attributes.GetNamedItem("ID");
-            if (tmpNode != null)
-                task.ID = int.Parse(tmpNode.InnerText);
-            tmpNode = node.Attributes.GetNamedItem("Время");
-            if (tmpNode != null)
-                task.Time = int.Parse(tmpNode.InnerText);
+            Load_ID_And_Time(task, node);
             List<KeyValuePair<string, bool>> Variants = new List<KeyValuePair<string, bool>>();
             task.Correct = "";
             foreach (XmlNode curNode in node)
@@ -119,23 +152,68 @@ namespace Model.Models.Testing.Load
             }
             block.Tasks.Add(task);
         }
+
+        /// <summary>
+        /// Добавление в блок задания на установление правильной последовательности
+        /// </summary>
+        /// <param name="block">Блок заданий</param>
+        /// <param name="node">
+        /// Корневой узел задания на установление правильной последовательности
+        /// </param>
         private void LoadSequence(CBlock block, XmlNode node)
         {
-
+            CSequenceAnswer task = new CSequenceAnswer();
+            Load_ID_And_Time(task, node);
+            List<KeyValuePair<uint, string>> Set = new List<KeyValuePair<uint, string>>();
+            foreach (XmlNode curNode in node)
+                switch (curNode.Name)
+                {
+                    case "Текст":
+                        task.Text = curNode.InnerText;
+                        break;
+                    case "Элемент":
+                        Set.Add(new KeyValuePair<uint, string>(
+                                uint.Parse(curNode.Attributes.GetNamedItem("Номер").InnerText),
+                                curNode.InnerText
+                            ));
+                        break;
+                }
+            SortSet(Set);
+            List<int> FreePositions = new List<int>(new int[Set.Count]);
+            task.Set = new List<string>(new string[Set.Count]);
+            task.Answer = new List<uint>(new uint[Set.Count]);
+            for (int i = 0; i < Set.Count; i++)
+                FreePositions[i] = i;
+            for (int i = 0; i < Set.Count; i++)
+            {
+                task.Correct += Set[i].Value + "\n";
+                int randPos = Program.Random.Next(0, FreePositions.Count);
+                task.Set[FreePositions[randPos]] = Set[i].Value;
+                task.Answer[i] = (uint)FreePositions[randPos];
+                FreePositions.RemoveAt(randPos);
+            }
+            block.Tasks.Add(task);
         }
+
+        /// <summary>
+        /// Добавление в блок задания на установление соответствия
+        /// </summary>
+        /// <param name="block">Блок заданий</param>
+        /// <param name="node">Корневой узел задания на установление соответствия</param>
         private void LoadCompliance(CBlock block, XmlNode node)
         {
 
         }
+
+        /// <summary>
+        /// Добавление в блок задания открытого типа
+        /// </summary>
+        /// <param name="block">Блок заданий</param>
+        /// <param name="node">Корневой узел задания открытого типа</param>
         private void LoadOpen(CBlock block, XmlNode node)
         {
             COpenAnswer task = new COpenAnswer();
-            XmlNode tmpNode = node.Attributes.GetNamedItem("ID");
-            if (tmpNode != null)
-                task.ID = int.Parse(tmpNode.InnerText);
-            tmpNode = node.Attributes.GetNamedItem("Время");
-            if (tmpNode != null)
-                task.Time = int.Parse(tmpNode.InnerText);
+            Load_ID_And_Time(task, node);
             foreach (XmlNode curNode in node)
                 switch (curNode.Name)
                 {
@@ -149,6 +227,11 @@ namespace Model.Models.Testing.Load
             block.Tasks.Add(task);
         }
 
+        /// <summary>
+        /// Добавление блока заданий в тест
+        /// </summary>
+        /// <param name="test">Тест</param>
+        /// <param name="node">Корневой узел блока заданий</param>
         private void LoadBlock(CTest test, XmlNode node)
         {
             CBlock block = new CBlock();
@@ -187,6 +270,12 @@ namespace Model.Models.Testing.Load
                     case "Открытый":
                         LoadOpen(block, curNode);
                         break;
+                    case "Последовательность":
+                        LoadSequence(block, curNode);
+                        break;
+                    case "Соответствие":
+                        LoadCompliance(block, curNode);
+                        break;
                 }
             if (block.Tasks.Count > 0)
             {
@@ -202,6 +291,12 @@ namespace Model.Models.Testing.Load
             }
         }
 
+        /// <summary>
+        /// Выполняет генерацию теста по данным из файла
+        /// </summary>
+        /// <param name="filePath">Путь до файла с тестом</param>
+        /// <param name="id">ID генерируемого теста</param>
+        /// <returns>Сгенерированный тест</returns>
         public CTest Make(string filePath, int id)
         {
             CTest test = new CTest();
@@ -218,7 +313,7 @@ namespace Model.Models.Testing.Load
                     {
                         // Способ оценивания теста
                         case "Оценивание":
-                            LoadTestScoreSummator(test, curNode);
+                            test.Summator = LoadSummator(curNode);
                             break;
                         // Загрузка блока заданий
                         case "Блок":

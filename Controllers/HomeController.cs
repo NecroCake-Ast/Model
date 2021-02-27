@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using System.IO;
-using Microsoft;
 using Model.Models.User;
 using Newtonsoft.Json;
-using Model.Models.Testing.Load;
-using Model.Models.Testing;
-using System.Threading;
-using Model.Models.Testing.Task;
 
 namespace Model.Controllers
 {
@@ -37,9 +31,6 @@ namespace Model.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-
-
-
             if (HttpContext.Session.GetString("login") != null)
             {
                 CUser tmp = JsonConvert.DeserializeObject<CUser>(HttpContext.Session.GetString("UserData"));
@@ -47,7 +38,7 @@ namespace Model.Controllers
                 {
                     case EUserType.UT_ADMIN:   return RedirectToRoute(new{ controller = "Admin",   action = "UserList" });
                     case EUserType.UT_STUDENT: return RedirectToRoute(new{ controller = "Student", action = "WorkList" });
-                    case EUserType.UT_TEACHER: return RedirectToRoute(new{ controller = "Teacher", action = "Home" });
+                    case EUserType.UT_TEACHER: return RedirectToRoute(new{ controller = "Teacher", action = "Journal" });
                 }
             }
             return View();
@@ -66,7 +57,7 @@ namespace Model.Controllers
                     switch (UserData.Type)
                     {
                         case EUserType.UT_ADMIN:   return RedirectToRoute(new{ controller = "Admin",   action = "UserList" });
-                        case EUserType.UT_STUDENT: return RedirectToRoute(new{ controller = "Student", action = "NewsWall" });
+                        case EUserType.UT_STUDENT: return RedirectToRoute(new{ controller = "Student", action = "WorkList" });
                         case EUserType.UT_TEACHER: return RedirectToRoute(new{ controller = "Teacher", action = "Journal" });
                     }
                 }

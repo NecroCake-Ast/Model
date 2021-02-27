@@ -70,13 +70,6 @@ namespace Model.Controllers
             catch { }
             return View();
         }
-
-        public ActionResult NewsWall()
-        {
-            if (IsNoLog() != null)
-                return IsNoLog();
-            return View();
-        }
         
         public ActionResult WorkList()
         {

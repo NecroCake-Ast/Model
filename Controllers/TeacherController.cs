@@ -4,7 +4,6 @@ using Model.Models.User;
 using Model.Models.Work;
 using Newtonsoft.Json;
 using Model.Models.Statistics.Testing;
-using System.Collections.Generic;
 
 namespace Model.Controllers
 {

@@ -8,65 +8,61 @@
     <head>
     </head>
     <body>
-        <div class="FullScreen">
-			<div class="VerticallAlign">
-				<div class="HorizontalAlign">
-                    @using(Html.BeginForm("Registration", "Admin", FormMethod.Post))
-                    {
-                        <table width="100%">
-                            <tr>
-								<td class="FormLeftTableStyle">
-									@Html.LabelFor(m => m.Login,"Логин", new { @class="MainInfo"})
-								</td>
-								<td class="FormRightTableStyle">
-									@Html.TextBoxFor(m=>m.Login, new { @class="MainInfo"})
-								</td>
-							</tr>
-                            <tr>
-								<td class="FormLeftTableStyle">
-									@Html.LabelFor(m => m.Password,"Пароль", new { @class="MainInfo"})
-								</td>
-								<td class="FormRightTableStyle">
-									@Html.TextBoxFor(m=>m.Password, new { @class="MainInfo"})
-								</td>
-							</tr>
-                            <tr>
-								<td class="FormLeftTableStyle">
-									@Html.LabelFor(m => m.FirstName,"Имя", new { @class="MainInfo"})
-								</td>
-								<td class="FormRightTableStyle">
-									@Html.TextBoxFor(m=>m.FirstName, new { @class="MainInfo"})
-								</td>
-							</tr>
-                            <tr>
-								<td class="FormLeftTableStyle">
-									@Html.LabelFor(m => m.SecondName,"Фамилия", new { @class="MainInfo"})
-								</td>
-								<td class="FormRightTableStyle">
-									@Html.TextBoxFor(m=>m.SecondName, new { @class="MainInfo"})
-								</td>
-							</tr>
-							<tr>
-								<td class="FormLeftTableStyle">
-									@Html.LabelFor(m=>m.Type, "Тип пользователя", new { @class="MainInfo"})
-								</td>
-								<td class="FormRightTableStyle">
-									@Html.RadioButtonFor(m=>m.Type, EUserType.UT_STUDENT)
-									@Html.Label(null, "Обучающийся", new { @class="MainInfo"})
-								</td>
-							</tr>
-							<tr>
-								<td/>
-								<td class="FormRightTableStyle">
-									@Html.RadioButtonFor(m=>m.Type, EUserType.UT_TEACHER)
-									@Html.Label(null, "Преподаватель", new { @class="MainInfo"})
-								</td>
-							</tr>
-			            </table>
-			            <p><input type="submit" value="Зарегистрировать" class="SendButton" /></p>
-                    }
-                </div>
-            </div>
+        <div class="section center-align">
+            @using (Html.BeginForm("Registration", "Admin", FormMethod.Post, new { @class="full-width" }))
+            {
+                <table width="100%">
+                    <tr>
+                        <td class="LeftHalfCell">
+                            @Html.LabelFor(m => m.Login, "Логин", new { @class = "MainInfo" })
+                        </td>
+                        <td class="RightHalfCell">
+                            @Html.TextBoxFor(m => m.Login, new { @class = "inp_field", @autocomplete = "off" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="LeftHalfCell">
+                            @Html.LabelFor(m => m.Password, "Пароль", new { @class = "MainInfo" })
+                        </td>
+                        <td class="RightHalfCell">
+                            @Html.TextBoxFor(m => m.Password, new { @class = "inp_field", @autocomplete = "off" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="LeftHalfCell">
+                            @Html.LabelFor(m => m.FirstName, "Имя", new { @class = "MainInfo" })
+                        </td>
+                        <td class="RightHalfCell">
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "inp_field", @autocomplete = "off" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="LeftHalfCell">
+                            @Html.LabelFor(m => m.SecondName, "Фамилия", new { @class = "MainInfo" })
+                        </td>
+                        <td class="RightHalfCell">
+                            @Html.TextBoxFor(m => m.SecondName, new { @class = "inp_field", @autocomplete = "off" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="LeftHalfCell">
+                            @Html.LabelFor(m => m.Type, "Тип пользователя", new { @class = "MainInfo" })
+                        </td>
+                        <td class="RightHalfCell">
+                            @Html.RadioButtonFor(m => m.Type, EUserType.UT_STUDENT)
+                            @Html.Label(null, "Обучающийся", new { @class = "MainInfo" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="LeftHalfCell" />
+                        <td class="RightHalfCell">
+                            @Html.RadioButtonFor(m => m.Type, EUserType.UT_TEACHER)
+                            @Html.Label(null, "Преподаватель", new { @class = "MainInfo" })
+                        </td>
+                    </tr>
+                </table>
+                <p><input type="submit" value="Зарегистрировать" class="SendButton" /></p>
+            }
         </div>
     </body>
 </html>

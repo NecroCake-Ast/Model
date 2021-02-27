@@ -18,7 +18,7 @@ namespace Model.Models.Statistics.Testing
 
         public void Save(CTestResult result)
         {
-            string fileName = result.StudentID + "-" + result.TestID + ".txt";
+            string fileName = result.StudentID + "-" + result.TestID + ".json";
             StreamWriter writer = new StreamWriter(m_storagePath + "/" + fileName);
             if (writer != null)
                 writer.Write(JsonConvert.SerializeObject(result, Program.JsonSetting));
@@ -28,11 +28,13 @@ namespace Model.Models.Statistics.Testing
         public CTestResult GetResult(int TestID, int UserID)
         {
             CTestResult result = null;
-            string fileName = UserID + "-" + TestID + ".txt";
+            string fileName = UserID + "-" + TestID + ".json";
             try
             {
                 StreamReader reader = new StreamReader(m_storagePath + "/" + fileName);
-                string tmp = reader.ReadLine();
+                string tmp = "";
+                while (!reader.EndOfStream)
+                    tmp += " " + reader.ReadLine();
                 reader.Close();
                 result = JsonConvert.DeserializeObject<CTestResult>(tmp, Program.JsonSetting);
             }
@@ -45,11 +47,13 @@ namespace Model.Models.Statistics.Testing
             List<CUserStatistic> result = new List<CUserStatistic>();
             try
             {
-                List<string> Files = Directory.GetFiles(m_storagePath, UserID + "-*.txt").ToList<string>();
+                List<string> Files = Directory.GetFiles(m_storagePath, UserID + "-*.json").ToList<string>();
                 foreach(string curFile in Files)
                 {
                     StreamReader reader = new StreamReader(curFile);
-                    string tmp = reader.ReadLine();
+                    string tmp = "";
+                    while (!reader.EndOfStream)
+                        tmp += " " + reader.ReadLine();
                     reader.Close();
                     result.Add(new CUserStatistic(JsonConvert.DeserializeObject<CTestResult>(tmp, Program.JsonSetting), workFinder));
                 }
@@ -63,11 +67,13 @@ namespace Model.Models.Statistics.Testing
             List<CTestStatisticRecord> TestResults = new List<CTestStatisticRecord>();
             try
             {
-                List<string> Files = Directory.GetFiles(m_storagePath, "*-" + TestID + ".txt").ToList<string>();
+                List<string> Files = Directory.GetFiles(m_storagePath, "*-" + TestID + ".json").ToList<string>();
                 foreach (string curFile in Files)
                 {
                     StreamReader reader = new StreamReader(curFile);
-                    string tmp = reader.ReadLine();
+                    string tmp = "";
+                    while (!reader.EndOfStream)
+                        tmp += " " + reader.ReadLine();
                     reader.Close();
                     CTestResult result = JsonConvert.DeserializeObject<CTestResult>(tmp, Program.JsonSetting);
                     statistic.TestMaxScore = result.Scores.MaxScore;

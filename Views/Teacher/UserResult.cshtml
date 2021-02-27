@@ -1,158 +1,141 @@
-﻿<!DOCTYPE html>
-@using Model.Models.Testing.Task;
-@using Model.Models.Statistics.Testing;
+﻿@using Model.Models.Statistics.Testing;
 @{
   Layout = "TeacherLayout";
 }
-<html>
-  <head>
-		<style type = "text/css">
-			Input.InpStyle{ border: 1px solid black; font-size: 24px; overflow-y: hidden; width: 60% }
-			label.Variant { font-size:18pt; }
-      br.Interval { line-height: 175%; }
-      td.Correct { background-color: RGB(210, 255, 210) }
-      td.AlmostCorrect { background-color: RGB(255, 255, 180) }
-      td.Error { background-color: RGB(255, 210, 210) }
-			table.TableStyle{ width: 100%; border-collapse: collapse;}
-      td.TableStyle{border: 2px solid black}
-      th.TableStyle{border: 2px solid black}
-		</style>
-  </head>
-  <body>
-    <table width="100%" class="TableStyle">
-      <tr>
+<table width="100%" class="TableStyle">
+    <tr>
         <th width="10%" class="TableStyle">Блок</th>
         <th width="10%" class="TableStyle">Задание</th>
         <th width="25%" class="TableStyle">Ответ пользователя</th>
         <th width="25%" class="TableStyle">Правильный ответ</th>
         <th width="10%" class="TableStyle">Балл</th>
         <th width="20%" class="TableStyle">Время</th>
-      </tr>
-      @foreach(CBlockResult curBlock in ViewBag.TestResult.Results)
-      {
+    </tr>
+    @foreach (CBlockResult curBlock in ViewBag.TestResult.Results)
+    {
         <tr>
-          @{
-            string Span = "<td class=\"TableStyle\" rowspan=\"" + curBlock.TaskResults.Count + "\">" + curBlock.BlockID + "</td>";
-            @Html.Raw(Span);
-          }
-          <td class="TableStyle">
-            1
-          </td>
-          @switch(curBlock.TaskResults[0].Score)
-          {
-            case 1:
-              @Html.Raw("<td class=\"Correct TableStyle\">")
-              break;
-            case 0:
-              @Html.Raw("<td class=\"Error TableStyle\">")
-              break;
-            default:
-              @Html.Raw("<td class=\"AlmostCorrect TableStyle\">")
-              break;
-          }
-              @{
+            @{
+                string Span = "<td class=\"TableStyle\" rowspan=\"" + curBlock.TaskResults.Count + "\">" + curBlock.BlockID + "</td>";
+                @Html.Raw(Span);
+            }
+            <td class="TableStyle">
+                1
+            </td>
+            @switch (curBlock.TaskResults[0].Score)
+            {
+                case 1:
+                    @Html.Raw("<td class=\"Correct TableStyle\">")
+                    break;
+                case 0:
+                    @Html.Raw("<td class=\"Error TableStyle\">")
+                    break;
+                default:
+                    @Html.Raw("<td class=\"AlmostCorrect TableStyle\">")
+                    break;
+            }
+            @{
                 string[] FAnswers = curBlock.TaskResults[0].Answer.Split('\n');
                 foreach (string curAnswer in FAnswers)
                 {
-                  @Html.Raw(curAnswer + "<br>")
+                    @Html.Raw(curAnswer + "<br>")
                 }
-              }
-              @Html.Raw("</td>")
+            }
+            @Html.Raw("</td>")
 
-          @switch(curBlock.TaskResults[0].Score)
-          {
-            case 1:
-              @Html.Raw("<td class=\"Correct TableStyle\">")
-              break;
-            case 0:
-              @Html.Raw("<td class=\"Error TableStyle\">")
-              break;
-            default:
-              @Html.Raw("<td class=\"AlmostCorrect TableStyle\">")
-              break;
-          }
-              @{
+            @switch (curBlock.TaskResults[0].Score)
+            {
+                case 1:
+                    @Html.Raw("<td class=\"Correct TableStyle\">")
+                    break;
+                case 0:
+                    @Html.Raw("<td class=\"Error TableStyle\">")
+                    break;
+                default:
+                    @Html.Raw("<td class=\"AlmostCorrect TableStyle\">")
+                    break;
+            }
+            @{
                 string[] FCorrectAnswers = curBlock.TaskResults[0].CorrectAnswer.Split('\n');
                 foreach (string curAnswer in FCorrectAnswers)
                 {
-                  @Html.Raw(curAnswer + "<br>")
-                }
-              }
-              @Html.Raw("</td>")
-
-          <td class="TableStyle">
-            @curBlock.TaskResults[0].Score
-          </td>
-          
-          <td class="TableStyle">
-            @curBlock.TaskResults[0].Time
-          </td>
-        </tr>
-        @for(int i = 1; i < curBlock.TaskResults.Count; i++)
-        {
-          <tr>
-            <td class="TableStyle">
-              @Html.Raw(i+1)
-            </td>
-              @switch(curBlock.TaskResults[i].Score)
-              {
-                case 1:
-                  @Html.Raw("<td class=\"Correct TableStyle\">")
-                  break;
-                case 0:
-                  @Html.Raw("<td class=\"Error TableStyle\">")
-                  break;
-                default:
-                  @Html.Raw("<td class=\"AlmostCorrect TableStyle\">")
-                  break;
-              }
-              @{
-                string[] Answers = curBlock.TaskResults[i].Answer.Split('\n');
-                foreach (string curAnswer in Answers)
-                {
-                  @Html.Raw(curAnswer + "<br>")
-                }
-              }
-              @Html.Raw("</td>")
-
-
-              @switch(curBlock.TaskResults[i].Score)
-              {
-                case 1:
-                  @Html.Raw("<td class=\"Correct TableStyle\">")
-                  break;
-                case 0:
-                  @Html.Raw("<td class=\"Error TableStyle\">")
-                  break;
-                default:
-                  @Html.Raw("<td class=\"AlmostCorrect TableStyle\">")
-                  break;
-              }
-                @{
-                  string[] CorrectAnswers = curBlock.TaskResults[i].CorrectAnswer.Split('\n');
-                  foreach (string curAnswer in CorrectAnswers)
-                  {
                     @Html.Raw(curAnswer + "<br>")
-                  }
                 }
-              @Html.Raw("</td>")
+            }
+            @Html.Raw("</td>")
 
             <td class="TableStyle">
-              @curBlock.TaskResults[i].Score
+                @curBlock.TaskResults[0].Score
             </td>
-            
+
             <td class="TableStyle">
-              @curBlock.TaskResults[i].Time
+                @curBlock.TaskResults[0].Time
             </td>
-          </tr>
+        </tr>
+        @for (int i = 1; i < curBlock.TaskResults.Count; i++)
+        {
+            <tr>
+                <td class="TableStyle">
+                    @Html.Raw(i + 1)
+                </td>
+                @switch (curBlock.TaskResults[i].Score)
+                {
+                    case 1:
+                        @Html.Raw("<td class=\"Correct TableStyle\">")
+                        break;
+                    case 0:
+                        @Html.Raw("<td class=\"Error TableStyle\">")
+                        break;
+                    default:
+                        @Html.Raw("<td class=\"AlmostCorrect TableStyle\">")
+                        break;
+                }
+                @{
+                    string[] Answers = curBlock.TaskResults[i].Answer.Split('\n');
+                    foreach (string curAnswer in Answers)
+                    {
+                        @Html.Raw(curAnswer + "<br>")
+                    }
+                }
+                @Html.Raw("</td>")
+
+
+                @switch (curBlock.TaskResults[i].Score)
+                {
+                    case 1:
+                        @Html.Raw("<td class=\"Correct TableStyle\">")
+                        break;
+                    case 0:
+                        @Html.Raw("<td class=\"Error TableStyle\">")
+                        break;
+                    default:
+                        @Html.Raw("<td class=\"AlmostCorrect TableStyle\">")
+                        break;
+                }
+                @{
+                    string[] CorrectAnswers = curBlock.TaskResults[i].CorrectAnswer.Split('\n');
+                    foreach (string curAnswer in CorrectAnswers)
+                    {
+                        @Html.Raw(curAnswer + "<br>")
+                    }
+                }
+                @Html.Raw("</td>")
+
+                <td class="TableStyle">
+                    @curBlock.TaskResults[i].Score
+                </td>
+
+                <td class="TableStyle">
+                    @curBlock.TaskResults[i].Time
+                </td>
+            </tr>
         }
-      }
-      <tr>
-        <td></td><td></td><td></td>
+    }
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
         <td class="TableStyle">
-          @Html.Raw("Итог: " + ViewBag.TestResult.Scores.Score + " из " + ViewBag.TestResult.Scores.MaxScore)
+            @Html.Raw("Итог: " + ViewBag.TestResult.Scores.Score + " из " + ViewBag.TestResult.Scores.MaxScore)
         </td>
-      </tr>
-    </table>
-  </body>
-</html>
+    </tr>
+</table>

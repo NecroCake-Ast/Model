@@ -31,3 +31,14 @@
     </div>
   </body>
 </html>
+
+	timetable.addEvent('Процесс 1', 'Заявка 1', new Date(2021, 01, 22, 12, 30), new Date(2021, 01, 22, 16, 15));
+    timetable.addEvent('Процесс 2', 'Заявка 1', new Date(2021, 01, 22, 16, 15), new Date(2021, 01, 22, 17, 20));
+    timetable.addEvent('Процесс 1', 'Заявка 2', new Date(2021, 01, 22, 10, 10), new Date(2021, 01, 22, 11, 45));
+	
+	Html.Raw("timetable.setScope(7, 19)");
+        Html.Raw("timetable.addEvent(");
+        Html.Raw(new Microsoft.AspNetCore.Html.HtmlString(curOperation.Name) + ", ");
+        Html.Raw(new Microsoft.AspNetCore.Html.HtmlString(curOperation.Order) + ", ");
+        Html.Raw("new Date(2021, 01, 22, 12, 30), ");
+        Html.Raw("new Date(2021, 01, 22, 16, 15));");

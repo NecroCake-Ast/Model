@@ -3,37 +3,31 @@
 @{
   Layout = "StudentLayout";
 }
-<html>
-  <head>
-  </head>
-  <body>
-    @if(@ViewBag.Works != null)
-    {
-      <table class="TableStyle">
-        <tr>
-          <td class="TitleTableStyle" width="50%">Название</td>
-          <td class="TitleTableStyle" width="20%">Тип</td>
-          <td class="TitleTableStyle" width="30%">Действие</td>
-        </tr>
-        @foreach(CWorkData curWork in @ViewBag.Works)
-        {
-          <tr>
-            <td class="TableStyle">@Html.Raw(curWork.Name)</td>
-            @switch(curWork.Type)
-            {
-              case EWorkType.WT_TEST:
-                <td class="TableStyle">Тест</td>
-                <td class="TableStyle">@Html.ActionLink("Начать", "LoadTest", "Testing", new {ID=curWork.WorkID}, new {@class="bar"})</td>
-                break;
-              case EWorkType.WT_UNITY_WORK:
-              case EWorkType.WT_JS_WORK:
-                <td class="TableStyle">Виртуальная работа</td>
-                <td class="TableStyle">@Html.ActionLink("Начать", "LoadWork", "Testing", new {ID=curWork.WorkID}, new {@class="bar"})</td>
-                break;
-            }
-          </tr>
-        }
-      </table>
-    }
-  </body>
-</html>
+@if (@ViewBag.Works != null)
+{
+	<table class="TableStyle">
+		<tr>
+			<th class="TableStyle" width="50%">Название</th>
+			<th class="TableStyle" width="25%">Тип</th>
+			<th class="TableStyle" width="25%">Действие</th>
+		</tr>
+		@foreach (CWorkData curWork in @ViewBag.Works)
+		{
+			<tr>
+				<td class="TableStyle">@Html.Raw(curWork.Name)</td>
+				@switch (curWork.Type)
+				{
+					case EWorkType.WT_TEST:
+						<td class="TableStyle">Тест</td>
+						<td class="TableStyle">@Html.ActionLink("Начать", "LoadTest", "Testing", new { ID = curWork.WorkID }, new { @class = "TableLink" })</td>
+						break;
+					case EWorkType.WT_UNITY_WORK:
+					case EWorkType.WT_JS_WORK:
+						<td class="TableStyle">Виртуальная работа</td>
+						<td class="TableStyle">@Html.ActionLink("Начать", "LoadWork", "Testing", new { ID = curWork.WorkID }, new { @class = "TableLink" })</td>
+						break;
+				}
+			</tr>
+		}
+	</table>
+}

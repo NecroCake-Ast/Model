@@ -5,8 +5,6 @@ using Newtonsoft.Json;
 using Model.Models.Testing;
 using Model.Models.Work;
 using Model.Models.Testing.Load;
-using System.Collections.Generic;
-using Model.Models.Testing.Task;
 using Model.Models.Statistics.Testing;
 using Model.Models.Works;
 using Model.Models.Statistics.Work;
@@ -144,6 +142,8 @@ namespace Model.Controllers
         {
             if (IsNoLog() != null)
                 return IsNoLog();
+            if (HttpContext.Session.GetString("Test") == null)
+                return RedirectToRoute(new { controller = "Student", action = "Statist" });
             CActiveTest Test = JsonConvert.DeserializeObject<CActiveTest>(HttpContext.Session.GetString("Test"), Program.JsonSetting);
             CUser UserData = JsonConvert.DeserializeObject<CUser>(HttpContext.Session.GetString("UserData"));
             HttpContext.Session.Remove("Test");

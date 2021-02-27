@@ -26,14 +26,14 @@ namespace Model.Models.Testing.Task
     \********************************************************************/
     public class CSequenceAnswer : ITask
     {
-        public string       Text    { get; set; }  // Текст вопроса
-        public List<uint>   Answer  { get; set; }  // Правильный ответ
-        public long         Time    { get; set; }  // Ожидаемое время ответа (в секундах)
-        public List<string> Set     { get; set; }  // Неупорядоченное множество
-        public int          ID      { get; set; }  // ID задания
-        public string       Correct { get; set; }  // Правильный ответ
+        public string       Text    { get; set; }  //!< Текст вопроса
+        public List<uint>   Answer  { get; set; }  //!< Правильный ответ
+        public long         Time    { get; set; }  //!< Ожидаемое время ответа (в секундах)
+        public List<string> Set     { get; set; }  //!< Неупорядоченное множество
+        public int          ID      { get; set; }  //!< ID задания
+        public string       Correct { get; set; }  //!< Правильный ответ
 
-        public ETaskTypeID  Type    { get => ETaskTypeID.TID_SEQUENCE; } // Тип задания
+        public ETaskTypeID  Type    { get => ETaskTypeID.TID_SEQUENCE; } //!< Тип задания
 
         /******************************\PRIVATE/******************************/
 
@@ -91,6 +91,16 @@ namespace Model.Models.Testing.Task
         }
 
         /******************************\PUBLIC/******************************/
+
+        public CSequenceAnswer()
+        {
+            Text = "";
+            Answer = new List<uint>();
+            Time = 0;
+            Set = new List<string>();
+            ID = 0;
+            Correct = "";
+        }
 
         /********************************************************************\
         КОНСТРУКТОР.: CSequenceAnswer

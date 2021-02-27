@@ -1,41 +1,58 @@
-﻿<!DOCTYPE html>
-@using Model.Models.User
+﻿@using Model.Models.User
 @model CAuthorizationData
 @{
-	Layout = "MainLayout";
+    Layout = "MainLayout";
 }
-<html>
-    <head>
-        
-    </head>
-    <body>
-        <div class="FullScreen">
-			<div class="VerticallAlign">
-				<div class="HorizontalAlign">
-					@using(Html.BeginForm("Login", "Home", FormMethod.Post))
-					{
-						<table width="100%">
-							<tr>
-								<td class="FormLeftTableStyle">
-									@Html.LabelFor(m => m.Login,"Логин", new { @class="MainInfo"})
-								</td>
-								<td class="FormRightTableStyle">
-									@Html.TextBoxFor(m=>m.Login, new { @class="MainInfo"})<br/>
-								</td>
-							</tr>
-							<tr>
-								<td class="FormLeftTableStyle">
-									@Html.LabelFor(m => m.Password, "Пароль", new { @class="MainInfo"})
-								</td>
-								<td class="FormRightTableStyle">
-									@Html.PasswordFor(m=>m.Password, new { @class="MainInfo"})
-								</td>
-							</tr>
-						</table>
-						<p><input type="submit" value="Войти" class="SendButton" /></p>
-					}
-				</div>
-			</div>
-		</div>
-    </body>
-</html>
+
+<div class="section center-align">
+
+    <label class="MainInfo">Авторизация</label><br />
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        @Html.TextBoxFor(m => m.Login, new { @class = "inp_field", @placeholder = "Логин", @autocomplete = "off" })
+        <br /><br />
+        @Html.PasswordFor(m => m.Password, new { @class = "inp_field", @placeholder = "Пароль" })
+        <br /><br />
+        <p>
+            <input type="submit" value="Войти" class="SendButton" />
+        </p>
+    }
+</div>
+
+<!--<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+        {
+            <input type="text" id="Login" class="form-control" placeholder="Логин">
+        }
+    </div>
+
+    <div class="FullScreen">
+        <div class="VerticallAlign">
+            <div class="HorizontalAlign">
+                @using(Html.BeginForm("Login", "Home", FormMethod.Post))
+                {
+                    <table width="100%">
+                        <tr>
+                            <td class="FormLeftTableStyle">
+                                @Html.LabelFor(m => m.Login,"Логин", new { @class="MainInfo"})
+                            </td>
+                            <td class="FormRightTableStyle">
+                                @Html.TextBoxFor(m=>m.Login, new { @class="MainInfo"})<br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FormLeftTableStyle">
+                                @Html.LabelFor(m => m.Password, "Пароль", new { @class="MainInfo"})
+                            </td>
+                            <td class="FormRightTableStyle">
+                                @Html.PasswordFor(m=>m.Password, new { @class="MainInfo"})
+                            </td>
+                        </tr>
+                    </table>
+                    <p><input type="submit" value="Войти" class="SendButton" /></p>
+                }
+            </div>
+        </div>
+    </div>
+    </body>-->

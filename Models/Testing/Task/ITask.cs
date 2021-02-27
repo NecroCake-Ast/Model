@@ -17,6 +17,7 @@ namespace Model.Models.Testing.Task
     {
         ETaskTypeID Type    { get; }      // Тип задания
         int         ID      { get; set; } // ID задания
+        long        Time    { get; set; } // Ожидаемое время ответа (в секундах)
         string      Correct { get; }      // Правильный ответ
 
         /*******************************************************\

@@ -1,0 +1,196 @@
+
+/*--- ŒÕ“≈…Õ≈–€---*/
+
+.content {
+    background-color: #101010;
+}
+
+.descript {
+    background-color: #101010;
+    background-image: url(../Views/Chain.png);
+    background-repeat: repeat-y;
+}
+
+.main-wrapper {
+    height: 100vh;
+}
+
+.section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.center-align {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.half {
+    background: #f9f9f9;
+    height: 50%;
+    width: 100%;
+    margin: 15px 0;
+}
+
+/*---‘Œ–Ã€---*/
+
+form.full-width
+{
+    width: 100%;
+}
+
+input.inp_field {
+    background-color: #202020;
+    color: green;
+}
+
+input::placeholder {
+    color: green;
+}
+
+input.SendButton {
+    font-size: 16pt;
+    background-color: #202020;
+    color: green;
+}
+
+label.MainInfo {
+    font-size: 16pt;
+    font-weight: bold;
+    color: green;
+}
+
+td.LeftHalfCell {
+    padding-right: 5px;
+    text-align: right;
+    width: 50%;
+    vertical-align: central;
+}
+
+td.RightHalfCell {
+    padding-left: 5px;
+    text-align: left;
+    width: 50%;
+    vertical-align: central;
+}
+
+/*---Õ¿¬»√¿÷»ﬂ---*/
+
+table.bar {
+    width: 99%;
+    background-color: #2f2f2f;
+}
+
+td.bar {
+    text-align: center;
+    border: 2px solid #005000;
+}
+
+a.bar:link {
+    font-size: 20pt;
+    padding: 2px 15px;
+    text-decoration: none;
+    color: green;
+}
+
+a.bar:visited {
+    color: green;
+}
+
+a.bar:hover {
+    color: lightgreen;
+}
+
+a.TableLink:link {
+    font-size: 16pt;
+    padding: 2px 15px;
+    text-decoration: none;
+    color: green;
+}
+
+a.TableLink:visited {
+    color: green;
+}
+
+a.TableLink:hover {
+    color: lightgreen;
+}
+
+/*---— –€“€≈_“¿¡À»÷€---*/
+
+table.FullScreen {
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+td.LeftCell {
+    width: 75%;
+    vertical-align: top;
+}
+
+td.RightCell {
+    width: 25%;
+    vertical-align: top;
+}
+
+/*---¬»ƒ»Ã€≈_“¿¡À»÷€---*/
+
+table.TableStyle {
+    width: 99%;
+    border-collapse: collapse;
+    border-radius: 10px 10px;
+}
+
+td.TableStyle {
+    border: 2px solid #003500;
+    padding-left: 3pt;
+    font-size: 16pt;
+    text-align: left;
+    color: green;
+}
+
+th.TableStyle {
+    border: 2px solid #003500;
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    color: green;
+}
+
+/*---“≈—“»–Œ¬¿Õ»≈---*/
+
+td.Correct {
+    background-color: RGB(0, 35, 0)
+}
+
+td.AlmostCorrect {
+    background-color: RGB(35, 35, 0)
+}
+
+td.Error {
+    background-color: RGB(35, 0, 0)
+}
+
+input.answer-pos {
+    border: 1px solid black;
+    background-color: #202020;
+    color: green;
+    font-size: 24px;
+    overflow-y: hidden;
+    width: 60%;
+}
+
+label.Variant {
+    font-size: 18pt;
+    color: green;
+}
+
+br.Interval {
+    line-height: 175%;
+}
